@@ -4,8 +4,7 @@ package edu.collin.cosc2436.bking.supermarketsmartshelf;
  * This class represents a retail item with a name.
  */
 public class RetailItem {
-	// Immutable field for the item's name (Once a RetailItem is created, its name
-	// cannot be changed).
+
 	private final String name;
 
 	/**
@@ -19,8 +18,7 @@ public class RetailItem {
 	}
 
 	/**
-	 * Getter that retrieves the name of the retail item. This method provides
-	 * read-only access to the name field.
+	 * Getter that retrieves the name of the retail item.
 	 * 
 	 * @return The name of the item.
 	 */
@@ -29,21 +27,18 @@ public class RetailItem {
 	}
 
 	/**
-	 * This method compares two RetailItem objects alphabetically by name. Uses
-	 * String's built-in compareTo method to compare this.name with other.name. This
-	 * method allows the items to be sorted alphabetically.
+	 * This method compares two RetailItem objects.
 	 * 
 	 * @param other The RetailItem to compare with.
-	 * @return A negative integer if this name comes before the other name, zero if
-	 *         they are equal, or a positive integer if this name comes after.
+	 * @return Negative one if this name comes before the other name, zero if they
+	 *         are equal, or positive one if this name comes after the other name.
 	 */
 	public int compareTo(RetailItem other) {
 		return this.name.compareTo(other.name);
 	}
 
 	/**
-	 * This method returns a string representation of the RetailItem item. Returns
-	 * the name, so when you print a RetailItem, you see its name.
+	 * This method returns a string representation of the RetailItem item.
 	 * 
 	 * @return The name of the retail item.
 	 */
@@ -51,5 +46,4 @@ public class RetailItem {
 	public String toString() {
 		return name;
 	}
-
 }
