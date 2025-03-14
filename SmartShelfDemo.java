@@ -27,54 +27,22 @@ public class SmartShelfDemo {
 		Employee employee = new Employee();
 		Customer customer = new Customer();
 
-		System.out.println("––––––––––Employee placing on the shelf:");
-
-		// Print each item in the unsorted list.
-		for (RetailItem item : cerealItems) {
-			System.out.println(item.getName());
-		}
-
-		// Employee places the items on the shelf.
-		shelf.placeItems(cerealItems);
-
-		System.out.println("\n––––––––––Placed on the shelf:");
-
-		System.out.println(shelf);
+		// An employee places items on the shelf.
+		employee.placeItems(shelf, cerealItems);
 
 		// Customer tries to get some items.
-		System.out.println("----------Customer getting Apple Jacks");
-		try {
-			RetailItem item = customer.getItem(shelf, "Apple Jacks");
-			System.out.println("----------Got " + item.getName());
-		} catch (OutOfStockException e) {
-			System.out.println(e);
-		}
-
-		System.out.println("----------Customer getting Cinnamon Toast Crunch");
-		try {
-			RetailItem item = customer.getItem(shelf, "Cinnamon Toast Crunch");
-			System.out.println("----------Got " + item.getName());
-		} catch (OutOfStockException e) {
-			System.out.println(e);
-		}
-
-		System.out.println("----------Customer getting Cinnamon Toast Crunch");
-		try {
-			RetailItem item = customer.getItem(shelf, "Cinnamon Toast Crunch");
-			System.out.println("----------Got " + item.getName());
-		} catch (OutOfStockException e) {
-			System.out.println(e);
-		}
+		customer.getItem(shelf, "Apple Jacks");
+		customer.getItem(shelf, "Cinnamon Toast Crunch");
+		customer.getItem(shelf, "Cinnamon Toast Crunch");
 
 		// Print what is on the shelf now.
 		System.out.println(shelf);
 
-		// Employee adds single items to the smart shelf.
-		System.out.println("----------Employee adding Cinnamon Toast Crunch");
+		// Employee adds items, one at a time, to the smart shelf.
 		employee.addItem(shelf, new RetailItem("Cinnamon Toast Crunch"));
-
-		System.out.println("----------Employee adding Lucky Charms");
 		employee.addItem(shelf, new RetailItem("Lucky Charms"));
+
+		// Print what is on the shelf now.
 		System.out.println(shelf);
 
 	}
