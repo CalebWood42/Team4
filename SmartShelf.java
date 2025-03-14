@@ -53,11 +53,11 @@ public class SmartShelf implements IShelfCustomer, IShelfEmployee {
 	@Override
 	public void addItem(RetailItem item) {
 		int index = findInsertionIndex(this.items, item);
-		if (index == -1) {
-			this.items.add(item);
-		} else {
+		//if (index == -1) {
+		//	this.items.add(item);
+		//} else {
 			this.items.add(index, item);
-		}
+		//}
 	}
 
 	/**
@@ -74,12 +74,11 @@ public class SmartShelf implements IShelfCustomer, IShelfEmployee {
 	@Override
 	public RetailItem findAndTake(String name) throws OutOfStockException {
 		RetailItem temp = new RetailItem(name);
-		// Use the same modified binary search helper method.
 		int index = findInsertionIndex(this.items, temp);
-		if (index == -1) {
+		if (items.get(index).equals(temp)) {
+			return this.items.remove(index);
+		} else
 			throw new OutOfStockException(name + " is out of stock");
-		}
-		return this.items.remove(index);
 	}
 
 	/**
@@ -119,7 +118,7 @@ public class SmartShelf implements IShelfCustomer, IShelfEmployee {
 	 * @param list  The list of RetailItem objects.
 	 * @param start The lower bound index.
 	 * @param end   The upper bound index.
-	 * @return pos  The insertion position.
+	 * @return pos The insertion position.
 	 */
 	private static int partition(ArrayList<RetailItem> list, int start, int end) {
 		int idx = new Random().nextInt(start, end);
@@ -152,7 +151,8 @@ public class SmartShelf implements IShelfCustomer, IShelfEmployee {
 	}
 
 	/**
-	 * Modified binary search that instead of looking for a match looks for the insertion position. 
+	 * Modified binary search that instead of looking for a match looks for the
+	 * insertion position.
 	 * 
 	 * @param list   The ArrayList to search
 	 * @param target The RetailItem object to search for
@@ -177,6 +177,8 @@ public class SmartShelf implements IShelfCustomer, IShelfEmployee {
 				} else {
 					hi = mid - 1;
 				}
+				// If the item is never found.
+				ret = mid;
 			}
 		}
 		return ret;
