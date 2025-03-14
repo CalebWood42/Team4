@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public interface IShelfEmployee {
 	/**
-	 * This method places a list of unsorted items onto the shelf.
+	 * This method puts an unsorted ArrayList of items on the shelf.
 	 * 
 	 * @param items An ArrayList of RetailItem objects to be placed on the shelf.
 	 */
