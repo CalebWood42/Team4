@@ -15,7 +15,7 @@ public class Customer {
 
 	// The parameter represents the smart shelf but is passed as an object that
 	// implements the IShelfCustomer interface
-	public void getItem(IShelfCustomer shelf, String itemName) {
+	public <T extends RetailItem> void getItem(IShelfCustomer<T> shelf, String itemName) {
 		System.out.println("----------Customer getting " + itemName);
 		try {
 			RetailItem item = shelf.findAndTake(itemName);
