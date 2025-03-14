@@ -5,16 +5,23 @@ package edu.collin.cosc2436.bking.supermarketsmartshelf;
  */
 public class Customer {
 	/**
-	 * This method takes the shelf interface and an item name, then requests the
-	 * item from the shelf. If that item is not found on the shelf, an
-	 * OutOfStockException is thrown.
+	 * This method takes two arguments: the shelf (as an interface reference) and a
+	 * name for the desired item. It then takes the item from the shelf. If that
+	 * item is not found on the shelf, an OutOfStockException is thrown.
 	 * 
 	 * @param shelf    The smart shelf as an IShelfCustomer reference.
 	 * @param itemName The name of the item the customer wants.
-	 * @return The RetailItem that the customer got from the shelf.
-	 * @throws OutOfStockException If the item is not found on the shelf.
 	 */
-	public RetailItem getItem(IShelfCustomer shelf, String itemName) throws OutOfStockException {
-		return shelf.findAndTake(itemName);
+
+	// The parameter represents the smart shelf but is passed as an object that
+	// implements the IShelfCustomer interface
+	public void getItem(IShelfCustomer shelf, String itemName) {
+		System.out.println("----------Customer getting " + itemName);
+		try {
+			RetailItem item = shelf.findAndTake(itemName);
+			System.out.println("----------Got " + item.getName());
+		} catch (OutOfStockException e) {
+			System.out.println(e);
+		}
 	}
 }
