@@ -14,11 +14,11 @@ public class Employee {
 	 * @param shelf The smart shelf as an IShelfEmployee reference.
 	 * @param items An unsorted ArrayList of RetailItem objects.
 	 */
-	public void placeItems(IShelfEmployee shelf, ArrayList<RetailItem> items) {
+	public <T extends RetailItem> void placeItems(IShelfEmployee<T> shelf, ArrayList<T> items) {
 		System.out.println("----------Employee placing on the shelf:");
 		
 		// Print each item in the unsorted list.
-		for (RetailItem item : items) {
+		for (T item : items) {
 			System.out.println(item);
 		}
 		
@@ -39,7 +39,7 @@ public class Employee {
 	 * @param shelf The smart shelf as an IShelfEmployee reference.
 	 * @param item  The single RetailItem to add to the shelf.
 	 */
-	public void addItem(IShelfEmployee shelf, RetailItem item) {
+	public <T extends RetailItem> void addItem(IShelfEmployee<T> shelf, T item) {
 		System.out.println("----------Employee adding " + item);
 		shelf.addItem(item);
 	}
