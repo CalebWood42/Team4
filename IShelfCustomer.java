@@ -3,7 +3,7 @@ package edu.collin.cosc2436.bking.supermarketsmartshelf;
 /**
  * Interface for customer interactions with the smart shelf.
  */
-public interface IShelfCustomer {
+public interface IShelfCustomer <T extends RetailItem>{
 	/**
 	 * This method takes the name of an item and returns a reference to an item with
 	 * this name. If the item cannot be found an OutOfStockException is thrown.
@@ -12,5 +12,5 @@ public interface IShelfCustomer {
 	 * @return A reference to an item with this name, if found.
 	 * @throws OutOfStockException If the item cannot be found.
 	 */
-	RetailItem findAndTake(String name) throws OutOfStockException;
+	T findAndTake(String name) throws OutOfStockException;
 }
