@@ -3,12 +3,13 @@ package edu.collin.cosc2436.bking.supermarketsmartshelf;
 import java.util.ArrayList;
 import java.util.Random;
 
+
 /**
  * The SmartShelf class implements both the customer and employee interfaces. It
  * maintains a sorted list of RetailItem objects.
  */
 
-public class SmartShelf implements IShelfCustomer, IShelfEmployee {
+public class SmartShelf <T extends RetailItem> implements IShelfCustomer, IShelfEmployee {
 
 	// Immutable field for the type of items on the shelf (e.g., "cereal").
 	private final String itemType;
@@ -27,8 +28,7 @@ public class SmartShelf implements IShelfCustomer, IShelfEmployee {
 	}
 
 	/**
-	 * Employee method: Places a batch of unsorted items onto the shelf. This method
-	 * copies the items into the shelf's list and then sorts them using QuickSort.
+	 * 
 	 * 
 	 * @param unsortedItems An ArrayList of RetailItem objects to be placed on the
 	 *                      shelf.
@@ -51,7 +51,7 @@ public class SmartShelf implements IShelfCustomer, IShelfEmployee {
 	public void addItem(RetailItem item) {
 		int index = findInsertionIndex(this.items, item);
 		this.items.add(index, item);
-	}
+		}
 
 	/**
 	 * Customer method: Finds and removes an item by its name. It uses a modified
@@ -67,12 +67,11 @@ public class SmartShelf implements IShelfCustomer, IShelfEmployee {
 		RetailItem temp = new RetailItem(name);
 		// Use the same modified binary search helper method.
 		int index = findInsertionIndex(this.items, temp);
-		// Check if the index is within bounds and the item at that index has the same
-		// name
-		if (index < this.items.size() && this.items.get(index).getName().equals(name)) {
+		if (items.get(index).getName().equals(name)) {
 			return this.items.remove(index);
+		} else {
+			throw new OutOfStockException(name + " is out of stock.");
 		}
-		throw new OutOfStockException(name + " is out of stock");
 	}
 
 	/**
@@ -90,99 +89,86 @@ public class SmartShelf implements IShelfCustomer, IShelfEmployee {
 	}
 
 	/**
-	 * This method implements the QuickSort algorithm on an ArrayList of RetailItem.
+	 * This method implements the quickSort algorithm
 	 * 
-	 * @param list The list of RetailItem objects.
-	 * @param lo   The lower bound index.
-	 * @param hi   The upper bound index.
+	 * @param list  The list of RetailItem objects.
+	 * @param start The lower bound index.
+	 * @param end   The upper bound index.
 	 */
-	private static void quickSort(ArrayList<RetailItem> list, int lo, int hi) {
-		if (lo < hi) {
-			// Partition the list and get the pivot index.
-			int p = partition(list, lo, hi);
-			// Recursively sort the left and right sublists.
-			quickSort(list, lo, p - 1);
-			quickSort(list, p + 1, hi);
+	private static void quickSort(ArrayList<RetailItem> list, int start, int end) {
+		if (start >= end) {
+			return;
 		}
+		int pos = partition(list, start, end);
+		quickSort(list, start, pos - 1);
+		quickSort(list, pos + 1, end);
 	}
 
 	/**
-	 * This method implements a partitioning algorithm by picking a random pivot and
-	 * scanning from left to right.
+	 * This method implements a partitioning algorithm.
 	 * 
-	 * @param list The list of RetailItem objects.
-	 * @param lo   The lower bound index.
-	 * @param hi   The upper bound index.
-	 * @return The final position of the pivot.
+	 * @param list  The list of RetailItem objects.
+	 * @param start
+	 * @param end
+	 * @return
 	 */
-	private static int partition(ArrayList<RetailItem> list, int lo, int hi) {
-		// Pick a random pivot index between the lo and hi, swap with lo.
-		Random rand = new Random();
-		int pivotIndex = lo + rand.nextInt(hi - lo + 1);
-		swap(list, lo, pivotIndex);
-		RetailItem pivot = list.get(lo);
+	private static int partition(ArrayList<RetailItem> list, int start, int end) {
+		int idx = new Random().nextInt(start, end);
+		swap(list, idx, end);
 
-		int left = lo + 1;
-		int right = hi;
+		RetailItem pivot = list.get(end);
 
-		// Scan until left and right cross
-		while (left <= right) {
-			// Move left while items[left] is <= pivot
-			while (left <= right && list.get(left).compareTo(pivot) <= 0) {
-				left++;
-			}
-			// Move right while items[right] is >= pivot
-			while (right >= left && list.get(right).compareTo(pivot) > 0) {
-				right--;
-			}
-			// Swap elements that stopped the scan
-			if (left < right) {
-				swap(list, left, right);
-				left++;
-				right--;
+		int pos = start;
+
+		for (int i = start; i < end; ++i) {
+			if (list.get(i).compareTo(pivot) <= 0) {
+				swap(list, pos++, i);
 			}
 		}
-		// Swap pivot with the rightmost entry of the left sublist
-		swap(list, lo, right);
-		// Return the final position of the pivot
-		return right;
+		swap(list, pos, end);
+		return pos;
 	}
 
 	/**
 	 * Helper method to swap two elements in the list.
 	 * 
 	 * @param list The list of RetailItem
-	 * @param pos1 The index of the first element
-	 * @param pos2 The index of the second element
+	 * @param i    The index of the first element
+	 * @param j    The index of the second element
 	 */
-	private static void swap(ArrayList<RetailItem> list, int pos1, int pos2) {
-		RetailItem temp = list.get(pos1);
-		list.set(pos1, list.get(pos2));
-		list.set(pos2, temp);
+	private static void swap(ArrayList<RetailItem> list, int i, int j) {
+		RetailItem temp = list.get(i);
+		list.set(i, list.get(j));
+		list.set(j, temp);
 	}
 
 	/**
-	 * Modified binary search to find the correct insertion index for a new item.
-	 * Even if there are duplicates of certain items, it determines the correct
-	 * position so that the sorted order is maintained.
+	 * Modified binary search
 	 * 
-	 * @param list The sorted list of RetailItem
-	 * @param item The RetailItem to insert
-	 * @return The insertion index
+	 * @param list   The ArrayList to search
+	 * @param target The RetailItem object to search for
+	 * @return A position of the RetailItem object if found and -1 otherwise
 	 */
-	private static int findInsertionIndex(ArrayList<RetailItem> list, RetailItem item) {
+	private static int findInsertionIndex(ArrayList<RetailItem> list, RetailItem target) {
+		int ret = -1;
 		int lo = 0;
 		int hi = list.size() - 1;
-		while (lo <= hi) {
-			int mid = lo + (hi - lo) / 2;
-			if (list.get(mid).compareTo(item) < 0) {
-				lo = mid + 1;
-			} else {
-				hi = mid - 1;
+			
+			while (lo <= hi) {
+				int mid = lo + (hi - lo) / 2;
+				if (list.get(mid).compareTo(target) == 0) {
+					ret = mid;
+					break;
+				}
+				
+				if (target.compareTo(list.get(mid)) > 0) {
+					lo = mid + 1;
+				} else {
+					hi = mid - 1;
+				}
+				//if item never found
+				ret = mid;
 			}
-		}
-		// After the loop, lo is the correct insertion point.
-		return lo;
+		return ret;
 	}
-
 }
